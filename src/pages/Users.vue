@@ -1,20 +1,15 @@
 <template>
-	<Layout title="لوحة التحكم"> </Layout>
+	<Layout title="المستخدمين"> </Layout>
 </template>
 
 <script>
 import Layout from './layout/Layout';
-
 export default {
-	name: 'Home',
+	name: 'Users',
+
 	components: {
 		Layout,
 	},
-	page: {
-		title: 'Home',
-	},
-	data: () => ({}),
-	methods: {},
 };
 </script>
 

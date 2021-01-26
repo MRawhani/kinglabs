@@ -1,10 +1,10 @@
 <template>
 	<Layout>
 		<div class="text-center pt-12">
-			<p class="display-4 font-weight-bold pb-4">4<span class="primary--text">0</span>4</p>
-			<p class="display-1">Page Not found!</p>
-			<p class="heading">Sorry! there is no such a page!</p>
-			<v-btn to="/" text large class="my-5"><v-icon class="mr-3">mdi-arrow-left</v-icon> back to home</v-btn>
+			<p class="display-4 pb-4">404</p>
+			<p class="display-1">الصفحة غير موجودة</p>
+			<p class="heading">المعذرة! لايوجد مثل هذه الصفحة</p>
+			<v-btn to="/" text large class="my-4" color="primary"><v-icon left>mdi-arrow-right</v-icon>الصفحة الرئيسية</v-btn>
 		</div>
 	</Layout>
 </template>

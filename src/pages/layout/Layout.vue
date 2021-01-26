@@ -1,10 +1,14 @@
 <template>
 	<div>
-		<TopNavbar></TopNavbar>
-		<SideBar></SideBar>
+		<TopNavbar @meunClicked="showDrawer = !showDrawer"></TopNavbar>
+		<SideBar :drawer="showDrawer"></SideBar>
 		<v-main>
-			<v-container fluid class="px-5 pb-8">
-				<div class="pt-3">
+			<v-container fluid class="px-5 pt-5 pb-8">
+				<div class="py-3 full-height">
+					<div v-if="title">
+						<h1 class="text-h4">{{ title }}</h1>
+						<v-divider class="my-4"></v-divider>
+					</div>
 					<slot />
 				</div>
 			</v-container>
@@ -22,7 +26,16 @@ export default {
 		TopNavbar,
 	},
 
-	data: () => ({}),
+	props: {
+		title: {
+			type: String,
+			default: null,
+		},
+	},
+
+	data: () => ({
+		showDrawer: true,
+	}),
 
 	methods: {},
 };

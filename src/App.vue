@@ -22,12 +22,13 @@ export default {
 };
 </script>
 <style lang="scss">
+@import '~nprogress/nprogress.css';
+
 .v-application {
-	background-color: #f2f5f8 !important;
+	background-color: #eceff3 !important;
 }
 
 .v-application a {
-	color: #0096c7 !important;
 	text-decoration: none !important;
 }
 </style>
