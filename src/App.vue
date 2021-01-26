@@ -25,4 +25,9 @@ export default {
 .v-application {
 	background-color: #f2f5f8 !important;
 }
+
+.v-application a {
+	color: #0096c7 !important;
+	text-decoration: none !important;
+}
 </style>

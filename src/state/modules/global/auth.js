@@ -33,15 +33,12 @@ export const actions = {
 	},
 
 	async logIn({ commit }, { email, password } = {}) {
-		// call the login api
-		const { data } = await api.post('/users/login', {
+		const { data } = await api.post('/login', {
 			email,
 			password,
 		});
-		if (!data.suspended) {
-			commit('SET_CURRENT_USER', data);
-		}
 
+		commit('SET_CURRENT_USER', data);
 		return data;
 	},
 
