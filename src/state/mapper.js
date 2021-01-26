@@ -9,3 +9,19 @@ export const authComputed = {
 export const authActions = {
 	...mapActions('global/auth', ['logIn', 'logOut']),
 };
+
+// Users helpers
+export const usersComputed = {
+	...mapState('users', ['users']),
+};
+
+export const usersActions = {
+	...mapActions('users', {
+		getUsersAction: 'getUsersList',
+		saveUserAction: 'saveUser',
+		deleteUserAction: 'deleteUser',
+		editUserAction: 'editUser',
+		suspendUserAction: 'suspendUser',
+		activateUserAction: 'activateUser',
+	}),
+};

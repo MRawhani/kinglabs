@@ -1,5 +1,5 @@
 <template>
-	<v-navigation-drawer v-model="showDrawer" app right clipped color="#f2f5f8" class="pt-6">
+	<v-navigation-drawer v-model="showDrawer" app right clipped color="#f0f2f5" class="pt-6">
 		<v-list nav dense>
 			<v-list-item-group color="primary">
 				<v-list-item v-for="(link, i) in links" :key="i" link :to="link.href">

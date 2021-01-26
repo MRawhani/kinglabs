@@ -50,5 +50,5 @@ export const actions = {
 
 // set the auth headers in axios requests
 function setAuthHeaders(state) {
-	api.defaults.headers.common.Authorization = state.currentUser ? state.currentUser.token : '';
+	api.defaults.headers.common.Authorization = state.currentUser ? `Bearer ${state.currentUser.token}` : '';
 }
