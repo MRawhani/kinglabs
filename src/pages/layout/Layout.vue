@@ -4,7 +4,7 @@
 		<SideBar :drawer="showDrawer"></SideBar>
 		<v-main>
 			<v-container fluid class="px-5 pt-5 pb-8">
-				<div class="py-3 full-height">
+				<div class="py-3">
 					<div v-if="title">
 						<h1 class="text-h4">{{ title }}</h1>
 						<v-divider class="my-4"></v-divider>

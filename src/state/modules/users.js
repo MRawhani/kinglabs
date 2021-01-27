@@ -43,28 +43,28 @@ export const mutations = {
 export const actions = {
 	getUsersList({ commit }) {
 		return api.get('/users').then((response) => {
-			const data = response.data;
+			const { data } = response.data;
 			commit('SET_USERS', data);
 			return data;
 		});
 	},
 	saveUser({ commit }, newUser) {
-		return api.post('/users/', newUser).then((res) => {
-			const data = res.data;
+		return api.post('/users', newUser).then((res) => {
+			const { data } = res.data;
 			commit('ADD_USER', data);
 			return data;
 		});
 	},
 	deleteUser({ commit }, userId) {
 		return api.delete(`/users/${userId}`).then((res) => {
-			const data = res.data;
+			const { data } = res.data;
 			commit('DELETE_USER', userId);
 			return data;
 		});
 	},
 	editUser({ commit }, { userData, userId }) {
 		return api.put(`/users/${userId}`, userData).then((res) => {
-			const data = res.data;
+			const { data } = res.data;
 			commit('EDIT_USER', data);
 			return data;
 		});

@@ -25,3 +25,17 @@ export const usersActions = {
 		activateUserAction: 'activateUser',
 	}),
 };
+
+// Branches helpers
+export const branchesComputed = {
+	...mapState('branches', ['branches']),
+};
+
+export const branchesActions = {
+	...mapActions('branches', {
+		getBranchesAction: 'getBranchesList',
+		saveBranchAction: 'saveBranch',
+		deleteBranchAction: 'deleteBranch',
+		editBranchAction: 'editBranch',
+	}),
+};
