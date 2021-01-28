@@ -10,6 +10,14 @@ export default [
 		},
 	},
 	{
+		path: '/tests',
+		name: 'tests',
+		component: () => lazyLoadView(import('../pages/Tests')),
+		meta: {
+			authRequired: true,
+		},
+	},
+	{
 		path: '/users',
 		name: 'users',
 		component: () => lazyLoadView(import('../pages/Users')),

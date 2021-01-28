@@ -39,3 +39,31 @@ export const branchesActions = {
 		editBranchAction: 'editBranch',
 	}),
 };
+
+// Tests helpers
+export const testsComputed = {
+	...mapState('tests', ['tests']),
+};
+
+export const testsActions = {
+	...mapActions('tests', {
+		getTestsAction: 'getTestsList',
+		saveTestAction: 'saveTest',
+		deleteTestAction: 'deleteTest',
+		editTestAction: 'editTest',
+	}),
+};
+
+// TestTypes helpers
+export const typesComputed = {
+	...mapState('testTypes', ['types']),
+};
+
+export const typesActions = {
+	...mapActions('testTypes', {
+		getTestTypesAction: 'getTestTypesList',
+		saveTypeAction: 'saveType',
+		deleteTypeAction: 'deleteType',
+		editTypeAction: 'editType',
+	}),
+};
