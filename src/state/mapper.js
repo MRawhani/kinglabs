@@ -40,6 +40,20 @@ export const branchesActions = {
 	}),
 };
 
+// Companies helpers
+export const companiesComputed = {
+	...mapState('companies', ['companies']),
+};
+
+export const companiesActions = {
+	...mapActions('companies', {
+		getCompaniesAction: 'getCompaniesList',
+		saveCompanyAction: 'saveCompany',
+		deleteCompanyAction: 'deleteCompany',
+		editCompanyAction: 'editCompany',
+	}),
+};
+
 // Tests helpers
 export const testsComputed = {
 	...mapState('tests', ['tests']),
@@ -51,19 +65,5 @@ export const testsActions = {
 		saveTestAction: 'saveTest',
 		deleteTestAction: 'deleteTest',
 		editTestAction: 'editTest',
-	}),
-};
-
-// TestTypes helpers
-export const typesComputed = {
-	...mapState('testTypes', ['types']),
-};
-
-export const typesActions = {
-	...mapActions('testTypes', {
-		getTestTypesAction: 'getTestTypesList',
-		saveTypeAction: 'saveType',
-		deleteTypeAction: 'deleteType',
-		editTypeAction: 'editType',
 	}),
 };

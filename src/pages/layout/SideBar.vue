@@ -1,5 +1,5 @@
 <template>
-	<v-navigation-drawer v-model="showDrawer" app right clipped color="#f0f2f5" class="pt-6">
+	<v-navigation-drawer v-model="showDrawer" app right clipped color="#f2f5f7" class="pt-6">
 		<v-list nav dense>
 			<v-list-item-group color="primary">
 				<v-list-item v-for="(link, i) in links" :key="i" link :to="link.href">
@@ -32,10 +32,11 @@ export default {
 			links: [
 				{ title: 'لوحة التحكم', icon: 'mdi-view-dashboard', href: '/' },
 				{ title: 'العملاء', icon: 'mdi-human-male-female', href: '/agents' },
-				{ title: 'الإختبارات', icon: 'mdi-test-tube', href: '/tests' },
+				{ title: 'الفحوصات', icon: 'mdi-test-tube', href: '/tests' },
 				{ title: 'التقارير', icon: 'mdi-chart-bar', href: '/reports' },
 				{ title: 'المستخدمين', icon: 'mdi-account-group', href: '/users' },
 				{ title: 'الفروع', icon: 'mdi-hospital-building', href: '/branches' },
+				{ title: 'الشركات', icon: 'mdi-domain', href: '/companies' },
 			],
 		};
 	},

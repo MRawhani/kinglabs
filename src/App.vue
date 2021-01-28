@@ -25,7 +25,7 @@ export default {
 @import '~nprogress/nprogress.css';
 
 .v-application {
-	background-color: #eceff3 !important;
+	background-color: #f2f5f7 !important;
 }
 
 .v-application a {

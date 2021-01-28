@@ -1,11 +1,13 @@
 <template>
 	<Layout>
-		<div class="text-center pt-12">
-			<p class="display-4 pb-4">404</p>
-			<p class="display-1">الصفحة غير موجودة</p>
-			<p class="heading">المعذرة! لايوجد مثل هذه الصفحة</p>
-			<v-btn to="/" text large class="my-4" color="primary"><v-icon left>mdi-arrow-right</v-icon>الصفحة الرئيسية</v-btn>
-		</div>
+		<v-card class="py-10">
+			<div class="text-center">
+				<p class="display-4 pb-4">404</p>
+				<p class="display-1">الصفحة غير موجودة</p>
+				<p class="heading">المعذرة! لايوجد مثل هذه الصفحة</p>
+				<v-btn to="/" text large class="my-4" color="primary"><v-icon left>mdi-arrow-right</v-icon>الصفحة الرئيسية</v-btn>
+			</div>
+		</v-card>
 	</Layout>
 </template>
 

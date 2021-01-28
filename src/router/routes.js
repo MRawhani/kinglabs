@@ -26,6 +26,14 @@ export default [
 		},
 	},
 	{
+		path: '/companies',
+		name: 'companies',
+		component: () => lazyLoadView(import('../pages/Companies')),
+		meta: {
+			authRequired: true,
+		},
+	},
+	{
 		path: '/branches',
 		name: 'branches',
 		component: () => lazyLoadView(import('../pages/Branches')),

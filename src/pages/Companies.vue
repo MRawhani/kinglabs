@@ -3,7 +3,7 @@
 		<v-card>
 			<v-toolbar flat color="white">
 				<v-toolbar-title>
-					الفروع
+					الشركات
 				</v-toolbar-title>
 				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-text-field v-model="search" label="بحث" dense outlined single-line hide-details append-icon="mdi-magnify"></v-text-field>
@@ -11,25 +11,25 @@
 				<v-btn color="primary" dark class="mb-1 ms-2" @click="formDialog = true">
 					<v-icon class="d-none d-sm-block me-2">mdi-plus</v-icon>
 					<v-icon class="d-sm-none d-block">mdi-plus</v-icon>
-					<span class="d-none d-sm-block"> إظافة فرع </span>
+					<span class="d-none d-sm-block"> إظافة شركة </span>
 				</v-btn>
 				<v-dialog v-model="formDialog" max-width="700px" @click:outside="closeForm">
-					<branch-form
-						ref="branchForm"
-						:branch="updateBranch"
+					<company-form
+						ref="companyForm"
+						:company="updateCompany"
 						:form-title="formTitle"
 						:is-edit="isEditMode"
 						@canceled="closeForm"
-						@submited="saveBranch"
-					></branch-form>
+						@submited="saveCompany"
+					></company-form>
 				</v-dialog>
 			</v-toolbar>
 		</v-card>
-		<v-data-table :headers="headers" :loading="isLoading" :items="branches" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
+		<v-data-table :headers="headers" :loading="isLoading" :items="companies" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
 			<template v-slot:[`item.actions`]="{ item }">
 				<v-tooltip top>
 					<template v-slot:activator="{ on }">
-						<v-btn dark small min-width="40" color="success" @click="editBranch(item)" v-on="on">
+						<v-btn dark small min-width="40" color="success" @click="editCompany(item)" v-on="on">
 							<v-icon size="18">mdi-pencil</v-icon>
 						</v-btn>
 					</template>
@@ -37,7 +37,7 @@
 				</v-tooltip>
 				<v-tooltip top>
 					<template v-slot:activator="{ on }">
-						<v-btn dark small min-width="40" class="mx-3" color="error" @click="deleteBranch(item)" v-on="on">
+						<v-btn dark small min-width="40" class="mx-3" color="error" @click="deleteCompany(item)" v-on="on">
 							<v-icon size="18">mdi-delete</v-icon>
 						</v-btn>
 					</template>
@@ -51,16 +51,16 @@
 
 <script>
 import Layout from './layout/Layout';
+import CompanyForm from '../components/companies/company-form';
 import ConfirmDailog from '../components/base/confirm-dailog';
-import { branchesComputed, branchesActions } from '../state/mapper';
-import BranchForm from '../components/branches/branch-form';
+import { companiesComputed, companiesActions } from '../state/mapper';
 
 export default {
-	name: 'Users',
+	name: 'Companys',
 
 	components: {
 		Layout,
-		BranchForm,
+		CompanyForm,
 		ConfirmDailog,
 	},
 
@@ -69,33 +69,36 @@ export default {
 		isLoading: false,
 		formDialog: false,
 		isEditMode: false,
-		updateBranch: {
+		updateCompany: {
 			name: '',
+			email: '',
 			phone: '',
-			address: '',
+			fee: '',
+			password: '',
 		},
 	}),
 
 	computed: {
-		...branchesComputed,
+		...companiesComputed,
 		headers() {
 			return [
 				{ text: 'الرقم', value: 'id' },
-				{ text: 'اسم الفرع', value: 'name' },
+				{ text: 'اسم الشركة', value: 'name' },
 				{ text: 'رقم التلفون', value: 'phone' },
-				{ text: 'العنوان', value: 'address' },
+				{ text: 'البريد الإلكتروني', value: 'email' },
+				{ text: 'العمولة', value: 'fee' },
 				{ text: 'إدارة', value: 'actions', sortable: false },
 			];
 		},
 		formTitle() {
-			return !this.isEditMode ? 'اظافة فرع' : 'تعديل فرع';
+			return !this.isEditMode ? 'اظافة شركة' : 'تعديل شركة';
 		},
 	},
 
 	async created() {
 		try {
 			this.isLoading = true;
-			await this.getBranchesAction();
+			await this.getCompaniesAction();
 			this.isLoading = false;
 		} catch (error) {
 			this.$VAlert.error('عذرا حدث خطأ!');
@@ -104,38 +107,38 @@ export default {
 	},
 
 	methods: {
-		...branchesActions,
-		editBranch(branch) {
+		...companiesActions,
+		editCompany(company) {
 			this.isEditMode = true;
-			Object.assign(this.updateBranch, branch);
+			Object.assign(this.updateCompany, company);
 			this.formDialog = true;
 		},
-		async deleteBranch(branch) {
+		async deleteCompany(company) {
 			try {
-				const confirmed = await this.$refs.confirm.open('حذف مستخدم', 'هل انت متأكد من حذف هذا الفرع؟');
+				const confirmed = await this.$refs.confirm.open('حذف شركة', 'هل انت متأكد من حذف هذا الشركة؟');
 				if (confirmed) {
-					await this.deleteBranchAction(branch.id);
-					this.$VAlert.success('تم حذف الفرع');
+					await this.deleteCompanyAction(company.id);
+					this.$VAlert.success('تم حذف الشركة');
 				}
 			} catch (error) {
 				this.$VAlert.error('عذرا حدث خطأ!');
 			}
 		},
-		async saveBranch(branchData) {
+		async saveCompany(companyData) {
 			try {
 				if (this.isEditMode) {
-					const branchId = this.updateBranch.id;
-					await this.editBranchAction({ branchData, branchId });
+					const companyId = this.updateCompany.id;
+					await this.editCompanyAction({ companyData, companyId });
 				} else {
-					await this.saveBranchAction(branchData);
+					await this.saveCompanyAction(companyData);
 				}
-				this.$VAlert.success('تم حفظ الفرع');
+				this.$VAlert.success('تم حفظ الشركة');
 			} catch (error) {
 				this.$VAlert.error('عذرا حدث خطأ!');
 			}
 		},
 		closeForm() {
-			this.$refs.branchForm.reset();
+			this.$refs.companyForm.reset();
 			this.isEditMode = false;
 			this.formDialog = false;
 		},

@@ -25,7 +25,7 @@
 				</v-dialog>
 			</v-toolbar>
 		</v-card>
-		<v-data-table :headers="headers" :loading="isLoading" :items="users" sort-by="id" sort-desc="id" class="mt-8 elevation-16" :search="search">
+		<v-data-table :headers="headers" :loading="isLoading" :items="users" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
 			<template v-slot:[`item.actions`]="{ item }">
 				<v-tooltip top>
 					<template v-slot:activator="{ on }">
