@@ -32,9 +32,10 @@ export default {
 			links: [
 				{ title: 'لوحة التحكم', icon: 'mdi-view-dashboard', href: '/' },
 				{ title: 'العملاء', icon: 'mdi-human-male-female', href: '/agents' },
-				{ title: 'الإختبارات', icon: 'mdi-package', href: '/tests' },
+				{ title: 'الإختبارات', icon: 'mdi-test-tube', href: '/tests' },
 				{ title: 'التقارير', icon: 'mdi-chart-bar', href: '/reports' },
 				{ title: 'المستخدمين', icon: 'mdi-account-group', href: '/users' },
+				{ title: 'الفروع', icon: 'mdi-hospital-building', href: '/branches' },
 			],
 		};
 	},

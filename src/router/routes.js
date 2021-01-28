@@ -18,6 +18,14 @@ export default [
 		},
 	},
 	{
+		path: '/branches',
+		name: 'branches',
+		component: () => lazyLoadView(import('../pages/Branches')),
+		meta: {
+			authRequired: true,
+		},
+	},
+	{
 		path: '/login',
 		name: 'login',
 		component: () => lazyLoadView(import('../pages/Login')),

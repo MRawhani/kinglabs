@@ -31,28 +31,28 @@ export const mutations = {
 export const actions = {
 	getBranchesList({ commit }) {
 		return api.get('/branches').then((response) => {
-			const data = response.data;
+			const { data } = response.data;
 			commit('SET_BRANCHES', data);
 			return data;
 		});
 	},
 	saveBranch({ commit }, newBranch) {
-		return api.post('/branches/', newBranch).then((res) => {
-			const data = res.data;
+		return api.post('/branches', newBranch).then((res) => {
+			const { data } = res.data;
 			commit('ADD_BRANCH', data);
 			return data;
 		});
 	},
 	deleteBranch({ commit }, branchId) {
 		return api.delete(`/branches/${branchId}`).then((res) => {
-			const data = res.data;
+			const { data } = res.data;
 			commit('DELETE_BRANCH', branchId);
 			return data;
 		});
 	},
 	editBranch({ commit }, { branchData, branchId }) {
 		return api.put(`/branches/${branchId}`, branchData).then((res) => {
-			const data = res.data;
+			const { data } = res.data;
 			commit('EDIT_BRANCH', data);
 			return data;
 		});
