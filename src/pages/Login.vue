@@ -3,12 +3,18 @@
 		<div>
 			<h1 class="text-center mb-10 mt-16">King Labs</h1>
 			<v-card width="400" class="mx-auto">
-				<v-card-title class="justify-center">
+				<v-card-title class="justify-center pb-4">
 					<v-divider class="my-1"></v-divider>
 					<div class="mx-4">تسجيل الدخول</div>
 					<v-divider class="my-1"></v-divider>
 				</v-card-title>
 				<v-card-text>
+					<div class="d-flex justify-center mb-6">
+						<v-btn-toggle v-model="loginType" mandatory color="primary">
+							<v-btn outlined max-width="80" width="80" value="user">مستخدم</v-btn>
+							<v-btn outlined max-width="80" width="80" value="company">شركة</v-btn>
+						</v-btn-toggle>
+					</div>
 					<v-form ref="loginForm" v-model="validForm" @submit.prevent="loginUser">
 						<v-text-field v-model="email" label="البريد الإلكتروني" outlined required :rules="emailRules" />
 						<v-text-field
@@ -45,6 +51,7 @@
 import { authActions } from '../state/mapper.js';
 export default {
 	data: () => ({
+		loginType: 'user',
 		email: '',
 		password: '',
 		validForm: false,
@@ -64,7 +71,9 @@ export default {
 				await this.loginAction({
 					email: this.email,
 					password: this.password,
+					type: this.loginType,
 				});
+
 				this.isLoading = false;
 				this.$router.push(this.$route.query.redirectFrom || { name: 'home' });
 			} catch (error) {

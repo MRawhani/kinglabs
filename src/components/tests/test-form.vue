@@ -14,19 +14,6 @@
 						<v-text-field v-model="formData.price" :rules="rules.price" dense label="السعر" outlined required></v-text-field>
 					</v-col>
 				</v-row>
-				<v-row>
-					<v-col class="py-0" sm="6" cols="12">
-						<v-select
-							v-model="formData.test_type_id"
-							:rules="rules.test_type_id"
-							dense
-							label="نوع الاختبار"
-							:items="testTypes"
-							outlined
-							required
-						></v-select>
-					</v-col>
-				</v-row>
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions>
@@ -39,8 +26,6 @@
 </template>
 
 <script>
-import { typesActions } from '../../state/mapper';
-
 export default {
 	name: 'testForm',
 	props: {
@@ -53,7 +38,6 @@ export default {
 			default: () => ({
 				name: '',
 				price: '',
-				test_type_id: '',
 			}),
 		},
 		isEdit: {
@@ -65,7 +49,6 @@ export default {
 		return {
 			validForm: false,
 			showPass: false,
-			types: [],
 		};
 	},
 	computed: {
@@ -73,33 +56,17 @@ export default {
 			return {
 				name: [(val) => !!val || 'اسم الاختبار مطلوب'],
 				price: [(val) => !!val || 'السعر مطلوب'],
-				test_type_id: [(val) => !!val || 'يرجى تحديد النوع'],
 			};
 		},
 		formData() {
 			return this.test;
 		},
-		testTypes() {
-			return this.types.map((type) => ({
-				value: type.id,
-				text: type.name,
-			}));
-		},
-	},
-	async created() {
-		try {
-			this.types = await this.loadTestTypes();
-		} catch (error) {
-			this.$VAlert.error('');
-		}
 	},
 	methods: {
-		loadTestTypes: typesActions.getTestTypesAction,
 		submited() {
 			this.$emit('submited', {
 				name: this.formData.name,
 				price: this.formData.price,
-				test_type_id: this.formData.test_type_id,
 			});
 
 			this.close();

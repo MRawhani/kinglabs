@@ -32,8 +32,8 @@ export const actions = {
 		setAuthHeaders(state);
 	},
 
-	async logIn({ commit }, { email, password } = {}) {
-		const { data } = await api.post('/login', {
+	async logIn({ commit }, { email, password, type } = {}) {
+		const { data } = await api.post(`/login?type=${type}`, {
 			email,
 			password,
 		});
