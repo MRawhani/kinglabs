@@ -68,14 +68,14 @@ export default {
 			this.isLoading = true;
 
 			try {
-				await this.loginAction({
+				const user = await this.loginAction({
 					email: this.email,
 					password: this.password,
 					type: this.loginType,
 				});
 
 				this.isLoading = false;
-				this.$router.push(this.$route.query.redirectFrom || { name: 'home' });
+				this.$router.push(this.$route.query.redirectFrom || user.type === 'user' ? { name: 'home' } : { name: 'companyAgents' });
 			} catch (error) {
 				this.isLoading = false;
 				this.showError = true;

@@ -7,6 +7,7 @@ export default [
 		component: () => lazyLoadView(import('../pages/Home')),
 		meta: {
 			authRequired: true,
+			accessLevel: 'user',
 		},
 	},
 	{
@@ -15,6 +16,7 @@ export default [
 		component: () => lazyLoadView(import('../pages/Tests')),
 		meta: {
 			authRequired: true,
+			accessLevel: 'user',
 		},
 	},
 	{
@@ -23,6 +25,7 @@ export default [
 		component: () => lazyLoadView(import('../pages/Users')),
 		meta: {
 			authRequired: true,
+			accessLevel: 'user',
 		},
 	},
 	{
@@ -31,6 +34,25 @@ export default [
 		component: () => lazyLoadView(import('../pages/Companies')),
 		meta: {
 			authRequired: true,
+			accessLevel: 'user',
+		},
+	},
+	{
+		path: '/agents',
+		name: 'agents',
+		component: () => lazyLoadView(import('../pages/Agents.vue')),
+		meta: {
+			authRequired: true,
+			accessLevel: 'user',
+		},
+	},
+	{
+		path: '/company-agents',
+		name: 'companyAgents',
+		component: () => lazyLoadView(import('../pages/CompanyAgents')),
+		meta: {
+			authRequired: true,
+			accessLevel: 'company',
 		},
 	},
 	{
@@ -39,6 +61,7 @@ export default [
 		component: () => lazyLoadView(import('../pages/Branches')),
 		meta: {
 			authRequired: true,
+			accessLevel: 'user',
 		},
 	},
 	{

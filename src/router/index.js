@@ -29,7 +29,22 @@ router.beforeEach((to, from, next) => {
 	const authRequired = to.matched.some((route) => route.meta.authRequired);
 
 	if (!authRequired || store.getters['global/auth/isLoggedIn']) {
-		next();
+		if (!to.meta.accessLevel) return next();
+
+		const allowed = to.meta.accessLevel === store.state.global.auth.currentUser.type;
+		if (allowed) {
+			next();
+		} else if (from.name === 'accessDenied') {
+			next(false);
+			NProgress.done();
+		} else {
+			next({
+				name: 'accessDenied',
+				query: {
+					redirectTo: from.fullPath,
+				},
+			});
+		}
 	} else {
 		next({
 			name: 'login',

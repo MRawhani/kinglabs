@@ -1,8 +1,18 @@
 <template>
 	<v-navigation-drawer v-model="showDrawer" app right clipped color="#f2f5f7" class="pt-6">
 		<v-list nav dense>
-			<v-list-item-group color="primary">
+			<v-list-item-group v-if="currentUser.type === 'user'" color="primary">
 				<v-list-item v-for="(link, i) in links" :key="i" link :to="link.href">
+					<v-list-item-icon>
+						<v-icon>{{ link.icon }}</v-icon>
+					</v-list-item-icon>
+					<v-list-item-content>
+						<v-list-item-title>{{ link.title }}</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+			</v-list-item-group>
+			<v-list-item-group v-else color="primary">
+				<v-list-item v-for="(link, i) in companyLinks" :key="i" link :to="link.href">
 					<v-list-item-icon>
 						<v-icon>{{ link.icon }}</v-icon>
 					</v-list-item-icon>
@@ -16,6 +26,7 @@
 </template>
 
 <script>
+import { authComputed } from '../../state/mapper';
 export default {
 	name: 'SideBar',
 
@@ -38,7 +49,12 @@ export default {
 				{ title: 'الفروع', icon: 'mdi-hospital-building', href: '/branches' },
 				{ title: 'الشركات', icon: 'mdi-domain', href: '/companies' },
 			],
+			companyLinks: [{ title: 'عملاء الشركة', icon: 'mdi-human-male-female', href: '/company-agents' }],
 		};
+	},
+
+	computed: {
+		...authComputed,
 	},
 
 	watch: {
