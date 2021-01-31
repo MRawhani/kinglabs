@@ -54,6 +54,21 @@ export const companiesActions = {
 	}),
 };
 
+// Batches helpers
+export const batchesComputed = {
+	...mapState('batches', ['batches']),
+};
+
+export const batchesActions = {
+	...mapActions('batches', {
+		getBatchesAction: 'getBatchesList',
+		saveBatchAction: 'saveBatch',
+		deleteBatchAction: 'deleteBatch',
+		editBatchAction: 'editBatch',
+		getBatchAction: 'getBatch',
+	}),
+};
+
 // Tests helpers
 export const testsComputed = {
 	...mapState('tests', ['tests']),
