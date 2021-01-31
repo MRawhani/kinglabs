@@ -8,7 +8,7 @@
 			<v-card-text>
 				<v-row>
 					<v-col class="py-0" sm="6" cols="12">
-						<v-text-field v-model="formData.name" :rules="rules.name" dense label="اسم الاختبار" outlined required></v-text-field>
+						<v-text-field v-model="formData.name" :rules="rules.name" dense label="اسم الفحص" outlined required></v-text-field>
 					</v-col>
 					<v-col class="py-0" sm="6" cols="12">
 						<v-text-field v-model="formData.price" :rules="rules.price" dense label="السعر" outlined required></v-text-field>
@@ -54,7 +54,7 @@ export default {
 	computed: {
 		rules() {
 			return {
-				name: [(val) => !!val || 'اسم الاختبار مطلوب'],
+				name: [(val) => !!val || 'اسم الفحص مطلوب'],
 				price: [(val) => !!val || 'السعر مطلوب'],
 			};
 		},
