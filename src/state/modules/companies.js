@@ -50,6 +50,11 @@ export const actions = {
 			return data;
 		});
 	},
+	getCompany(context, companyId) {
+		return api.get(`/companies/${companyId}`).then((res) => {
+			return res.data.data;
+		});
+	},
 	editCompany({ commit }, { companyData, companyId }) {
 		return api.put(`/companies/${companyId}`, companyData).then((res) => {
 			const { data } = res.data;

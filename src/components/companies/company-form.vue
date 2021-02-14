@@ -27,7 +27,11 @@
 						<v-text-field v-model="formData.phone" :rules="rules.phone" dense label="رقم التلفون" outlined required></v-text-field>
 					</v-col>
 					<v-col class="py-0" sm="6" cols="12">
-						<v-text-field v-model="formData.fee" dense label="العموله" outlined></v-text-field>
+						<v-text-field v-model="formData.discount" dense label="التخفيض" outlined>
+							<template v-slot:append>
+								<span class="mt-1 primary--text text-body-2 mark">%</span>
+							</template>
+						</v-text-field>
 					</v-col>
 				</v-row>
 				<v-row>
@@ -70,7 +74,7 @@ export default {
 				name: '',
 				email: '',
 				phone: '',
-				fee: '',
+				discount: '',
 				password: '',
 			}),
 		},
@@ -91,7 +95,7 @@ export default {
 				name: [(val) => !!val || 'اسم المستخدم مطلوب'],
 				email: [(value) => !!value || 'بريد إلكتروني مطلوب', (value) => /.+@.+\..+/.test(value) || 'يرجى إدخال بريد إلكتروني صحيح'],
 				phone: [(val) => !!val || 'رقم التلفون مطلوب'],
-				fee: [(val) => !!val || 'يرجى تحديد العمولة'],
+				discount: [(val) => !!val || 'يرجى تحديد التخفيض'],
 				password: [(value) => !!value || 'كلمة المرور مطلوبة'],
 			};
 		},
@@ -105,7 +109,7 @@ export default {
 				name: this.formData.name,
 				email: this.formData.email,
 				phone: this.formData.phone,
-				fee: this.formData.fee,
+				discount: this.formData.discount,
 				password: !this.isEdit ? this.formData.password : undefined,
 				password_confirmation: !this.isEdit ? this.formData.password : undefined,
 			});

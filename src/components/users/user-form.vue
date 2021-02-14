@@ -34,7 +34,7 @@
 					<v-col class="py-0" sm="6" cols="12">
 						<v-select v-model="formData.branch_id" dense label="الفرع" :items="branchList" outlined required></v-select>
 					</v-col>
-					<v-col v-if="!isEdit" class="py-0" sm="6" cols="12">
+					<v-col class="py-0" sm="6" cols="12">
 						<v-text-field
 							v-model="formData.password"
 							:type="showPass ? 'text' : 'password'"
@@ -94,12 +94,13 @@ export default {
 	},
 	computed: {
 		rules() {
+			const passRule = this.isEdit ? [] : [(value) => !!value || 'كلمة المرور مطلوبة'];
 			return {
 				name: [(val) => !!val || 'اسم المستخدم مطلوب'],
 				email: [(value) => !!value || 'بريد إلكتروني مطلوب', (value) => /.+@.+\..+/.test(value) || 'يرجى إدخال بريد إلكتروني صحيح'],
 				phone: [(val) => !!val || 'رقم التلفون مطلوب'],
 				branch_id: [(val) => !!val || 'يرجى تحديد الفرع'],
-				password: [(value) => !!value || 'كلمة المرور مطلوبة'],
+				password: passRule,
 			};
 		},
 		formData() {
@@ -128,8 +129,8 @@ export default {
 				phone: this.formData.phone,
 				job_title: this.formData.job_title,
 				branch_id: this.formData.branch_id,
-				password: !this.isEdit ? this.formData.password : undefined,
-				password_confirmation: !this.isEdit ? this.formData.password : undefined,
+				password: this.formData.password,
+				password_confirmation: this.formData.password,
 			});
 
 			this.close();

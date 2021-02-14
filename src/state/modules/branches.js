@@ -26,6 +26,21 @@ export const mutations = {
 			}
 		});
 	},
+	EDIT_MAIN(state, id) {
+		state.branches = state.branches.map((branch) => ({
+			...branch,
+			is_main: false,
+		}));
+
+		state.branches.filter((branch, i) => {
+			if (branch.id === id) {
+				Vue.set(state.branches, i, {
+					...branch,
+					is_main: true,
+				});
+			}
+		});
+	},
 };
 
 export const actions = {
@@ -54,6 +69,13 @@ export const actions = {
 		return api.put(`/branches/${branchId}`, branchData).then((res) => {
 			const { data } = res.data;
 			commit('EDIT_BRANCH', data);
+			return data;
+		});
+	},
+	editMain({ commit }, branchId) {
+		return api.put(`/branches/${branchId}/main`).then((res) => {
+			const { data } = res.data;
+			commit('EDIT_MAIN', data.id);
 			return data;
 		});
 	},

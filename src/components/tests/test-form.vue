@@ -13,6 +13,16 @@
 					<v-col class="py-0" sm="6" cols="12">
 						<v-text-field v-model="formData.price" :rules="rules.price" dense label="السعر" outlined required></v-text-field>
 					</v-col>
+					<v-col class="py-0" sm="6" cols="12">
+						<v-text-field v-model="formData.duration" :rules="rules.duration" dense label="المدة الزمنية" outlined required>
+							<template v-slot:append>
+								<span class="mt-1 primary--text text-body-2 mark">ساعات</span>
+							</template>
+						</v-text-field>
+					</v-col>
+					<v-col class="py-0" sm="6" cols="12">
+						<v-text-field v-if="isEdit" v-model="formData.note" dense label="ملاحظة" outlined required></v-text-field>
+					</v-col>
 				</v-row>
 			</v-card-text>
 			<v-divider></v-divider>
@@ -38,6 +48,8 @@ export default {
 			default: () => ({
 				name: '',
 				price: '',
+				duration: '',
+				note: '',
 			}),
 		},
 		isEdit: {
@@ -56,6 +68,7 @@ export default {
 			return {
 				name: [(val) => !!val || 'اسم الفحص مطلوب'],
 				price: [(val) => !!val || 'السعر مطلوب'],
+				duration: [(val) => !!val || 'المدة الزمنية مطلوبة'],
 			};
 		},
 		formData() {
@@ -67,6 +80,8 @@ export default {
 			this.$emit('submited', {
 				name: this.formData.name,
 				price: this.formData.price,
+				duration: this.formData.duration,
+				note: this.formData.note,
 			});
 
 			this.close();

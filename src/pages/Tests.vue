@@ -1,11 +1,12 @@
 <template>
 	<Layout>
+		<div class="d-flex">
+			<h1 class="text-h4">الفحوصات</h1>
+			<v-spacer></v-spacer>
+		</div>
+		<v-divider class="my-4"></v-divider>
 		<v-card>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>
-					الفحوصات
-				</v-toolbar-title>
-				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-text-field v-model="search" label="بحث" dense outlined single-line hide-details append-icon="mdi-magnify"></v-text-field>
 				<v-spacer></v-spacer>
 				<v-btn color="primary" dark class="mb-1 ms-2" @click="formDialog = true">
@@ -25,7 +26,10 @@
 				</v-dialog>
 			</v-toolbar>
 		</v-card>
-		<v-data-table :headers="headers" :loading="isLoading" :items="tests" sort-by="id" sort-desc="id" class="mt-8 elevation-16" :search="search">
+		<v-data-table :headers="headers" :loading="isLoading" :items="tests" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
+			<template v-slot:[`item.duration`]="{ value }">
+				{{ `${value} ساعات` }}
+			</template>
 			<template v-slot:[`item.actions`]="{ item }">
 				<v-tooltip top>
 					<template v-slot:activator="{ on }">
@@ -69,7 +73,8 @@ export default {
 		updateTest: {
 			name: '',
 			price: '',
-			test_type_id: '',
+			duration: '',
+			note: '',
 		},
 	}),
 	computed: {
@@ -79,6 +84,7 @@ export default {
 				{ text: 'الرقم', value: 'id' },
 				{ text: 'اسم الفحص', value: 'name' },
 				{ text: 'السعر', value: 'price' },
+				{ text: 'المدة الزمنية', value: 'duration' },
 				{ text: 'إدارة', value: 'actions', sortable: false },
 			];
 		},

@@ -3,7 +3,7 @@ import store from '../state/store';
 export default [
 	{
 		path: '/',
-		name: 'home',
+		name: 'dashboard',
 		component: () => lazyLoadView(import('../pages/Home')),
 		meta: {
 			authRequired: true,
@@ -29,6 +29,15 @@ export default [
 		},
 	},
 	{
+		path: '/reports',
+		name: 'reports',
+		component: () => lazyLoadView(import('../pages/Reports')),
+		meta: {
+			authRequired: true,
+			accessLevel: 'user',
+		},
+	},
+	{
 		path: '/companies',
 		name: 'companies',
 		component: () => lazyLoadView(import('../pages/Companies')),
@@ -41,6 +50,15 @@ export default [
 		path: '/agents',
 		name: 'agents',
 		component: () => lazyLoadView(import('../pages/Agents.vue')),
+		meta: {
+			authRequired: true,
+			accessLevel: 'user',
+		},
+	},
+	{
+		path: '/invoices',
+		name: 'invoices',
+		component: () => lazyLoadView(import('../pages/Invoices')),
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -119,7 +137,7 @@ function lazyLoadView(AsyncView) {
 		error: require('../components/base/timeout.vue').default,
 		// Time before giving up trying to load the component.
 		// Default: Infinity (milliseconds).
-		timeout: 10000,
+		timeout: 120000,
 	});
 
 	return Promise.resolve({

@@ -1,8 +1,12 @@
 <template>
 	<div class="login mx-4">
 		<div>
-			<h1 class="text-center mb-10 mt-16">King Labs</h1>
+			<h1 class="text-center mb-10 mt-10" style="color: #2057a7">King diagonsitc lab</h1>
 			<v-card width="400" class="mx-auto">
+				<div class="d-flex justify-center pt-2">
+					<img src="../assets/logo.jpg" width="200" />
+				</div>
+
 				<v-card-title class="justify-center pb-4">
 					<v-divider class="my-1"></v-divider>
 					<div class="mx-4">تسجيل الدخول</div>
@@ -27,11 +31,7 @@
 							:rules="passRules"
 							@click:append="showPass = !showPass"
 						/>
-						<v-checkbox hide-details="auto" class="mt-0 mb-4 pt-0 d-inline-block" label="تذكرني"></v-checkbox>
 						<v-btn type="submit" :loading="isLoading" large block color="success">تسجيل الدخول</v-btn>
-						<div class="mt-6 text-center">
-							<a href="#">هل نسيت كلمة المرور؟</a>
-						</div>
 					</v-form>
 				</v-card-text>
 			</v-card>
@@ -75,7 +75,7 @@ export default {
 				});
 
 				this.isLoading = false;
-				this.$router.push(this.$route.query.redirectFrom || user.type === 'user' ? { name: 'home' } : { name: 'companyAgents' });
+				this.$router.push(this.$route.query.redirectFrom || user.type === 'user' ? { name: 'dashboard' } : { name: 'companyAgents' });
 			} catch (error) {
 				this.isLoading = false;
 				this.showError = true;

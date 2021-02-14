@@ -1,18 +1,20 @@
 <template>
 	<Layout>
+		<div class="d-flex">
+			<h1 class="text-h4">الفروع</h1>
+			<v-spacer></v-spacer>
+			<v-btn color="primary" dark class="mb-1 ms-2" @click="formDialog = true">
+				<v-icon class="d-none d-sm-block me-2">mdi-plus</v-icon>
+				<v-icon class="d-sm-none d-block">mdi-plus</v-icon>
+				<span class="d-none d-sm-block"> إظافة فرع </span>
+			</v-btn>
+		</div>
+		<v-divider class="my-4"></v-divider>
 		<v-card>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>
-					الفروع
-				</v-toolbar-title>
-				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-text-field v-model="search" label="بحث" dense outlined single-line hide-details append-icon="mdi-magnify"></v-text-field>
 				<v-spacer></v-spacer>
-				<v-btn color="primary" dark class="mb-1 ms-2" @click="formDialog = true">
-					<v-icon class="d-none d-sm-block me-2">mdi-plus</v-icon>
-					<v-icon class="d-sm-none d-block">mdi-plus</v-icon>
-					<span class="d-none d-sm-block"> إظافة فرع </span>
-				</v-btn>
+				<v-btn outlined color="primary" @click="mainDialog = true">تحديد الفرع الرئيسي</v-btn>
 				<v-dialog v-model="formDialog" max-width="700px" @click:outside="closeForm">
 					<branch-form
 						ref="branchForm"
@@ -23,9 +25,37 @@
 						@submited="saveBranch"
 					></branch-form>
 				</v-dialog>
+				<v-dialog v-model="mainDialog" max-width="400" @click:outside="mainDialog = false">
+					<v-card>
+						<v-card-title>تحديد الفرع الرئيسي</v-card-title>
+						<v-divider></v-divider>
+						<v-card-text>
+							<v-select class="mt-4" v-model="mainBranch" dense label="الفرع" :items="branchList" outlined required></v-select>
+						</v-card-text>
+						<v-divider></v-divider>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="primary" text @click="mainDialog = false">
+								اغلاق
+							</v-btn>
+							<v-btn color="primary" text @click="saveMain">
+								حفظ
+							</v-btn>
+						</v-card-actions>
+					</v-card>
+				</v-dialog>
 			</v-toolbar>
 		</v-card>
-		<v-data-table :headers="headers" :loading="isLoading" :items="branches" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
+		<v-data-table
+			:headers="headers"
+			:loading="isLoading"
+			:items="branches"
+			sort-by="id"
+			sort-desc
+			class="mt-8 elevation-16"
+			:search="search"
+			:item-class="isMain"
+		>
 			<template v-slot:[`item.actions`]="{ item }">
 				<v-tooltip top>
 					<template v-slot:activator="{ on }">
@@ -68,7 +98,9 @@ export default {
 		search: '',
 		isLoading: false,
 		formDialog: false,
+		mainDialog: false,
 		isEditMode: false,
+		mainBranch: '',
 		updateBranch: {
 			name: '',
 			phone: '',
@@ -89,6 +121,12 @@ export default {
 		},
 		formTitle() {
 			return !this.isEditMode ? 'اظافة فرع' : 'تعديل فرع';
+		},
+		branchList() {
+			return this.branches.map((branch) => ({
+				value: branch.id,
+				text: branch.name,
+			}));
 		},
 	},
 
@@ -133,6 +171,22 @@ export default {
 			} catch (error) {
 				this.$VAlert.error('عذرا حدث خطأ!');
 			}
+		},
+		async saveMain() {
+			try {
+				this.isLoading = true;
+				await this.editMainAction(this.mainBranch);
+				this.isLoading = false;
+				this.$VAlert.success('تم حفظ الفرع');
+			} catch (error) {
+				this.$VAlert.error('عذرا حدث خطأ!');
+				this.isLoading = false;
+			}
+
+			this.mainDialog = false;
+		},
+		isMain(item) {
+			return item.is_main ? 'green lighten-5' : '';
 		},
 		closeForm() {
 			this.$refs.branchForm.reset();

@@ -1,18 +1,20 @@
 <template>
 	<Layout>
+		<div class="d-flex">
+			<h1 class="text-h4">الشركات</h1>
+			<v-spacer></v-spacer>
+			<v-btn color="primary" dark class="mb-1 ms-2" @click="formDialog = true">
+				<v-icon class="d-none d-sm-block me-2">mdi-plus</v-icon>
+				<v-icon class="d-sm-none d-block">mdi-plus</v-icon>
+				<span class="d-none d-sm-block"> إظافة شركة </span>
+			</v-btn>
+		</div>
+		<v-divider class="my-4"></v-divider>
 		<v-card>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>
-					الشركات
-				</v-toolbar-title>
-				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-text-field v-model="search" label="بحث" dense outlined single-line hide-details append-icon="mdi-magnify"></v-text-field>
 				<v-spacer></v-spacer>
-				<v-btn color="primary" dark class="mb-1 ms-2" @click="formDialog = true">
-					<v-icon class="d-none d-sm-block me-2">mdi-plus</v-icon>
-					<v-icon class="d-sm-none d-block">mdi-plus</v-icon>
-					<span class="d-none d-sm-block"> إظافة شركة </span>
-				</v-btn>
+
 				<v-dialog v-model="formDialog" max-width="700px" @click:outside="closeForm">
 					<company-form
 						ref="companyForm"
@@ -26,6 +28,9 @@
 			</v-toolbar>
 		</v-card>
 		<v-data-table :headers="headers" :loading="isLoading" :items="companies" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
+			<template v-slot:[`item.discount`]="{ value }">
+				{{ `${value}%` }}
+			</template>
 			<template v-slot:[`item.actions`]="{ item }">
 				<v-tooltip top>
 					<template v-slot:activator="{ on }">
@@ -86,7 +91,7 @@ export default {
 				{ text: 'اسم الشركة', value: 'name' },
 				{ text: 'رقم التلفون', value: 'phone' },
 				{ text: 'البريد الإلكتروني', value: 'email' },
-				{ text: 'العمولة', value: 'fee' },
+				{ text: 'التخفيض', value: 'discount' },
 				{ text: 'إدارة', value: 'actions', sortable: false },
 			];
 		},

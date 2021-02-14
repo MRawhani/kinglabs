@@ -31,8 +31,10 @@ router.beforeEach((to, from, next) => {
 	if (!authRequired || store.getters['global/auth/isLoggedIn']) {
 		if (!to.meta.accessLevel) return next();
 
-		const allowed = to.meta.accessLevel === store.state.global.auth.currentUser.type;
-		if (allowed) {
+		const levelAccess = to.meta.accessLevel === store.state.global.auth.currentUser.type;
+		const pageAccess = to.name === 'companyAgents' ? true : store.state.global.auth.currentUser.permissions.includes(to.name);
+
+		if (levelAccess && pageAccess) {
 			next();
 		} else if (from.name === 'accessDenied') {
 			next(false);

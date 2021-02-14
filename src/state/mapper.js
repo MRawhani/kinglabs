@@ -37,6 +37,21 @@ export const branchesActions = {
 		saveBranchAction: 'saveBranch',
 		deleteBranchAction: 'deleteBranch',
 		editBranchAction: 'editBranch',
+		editMainAction: 'editMain',
+	}),
+};
+
+// Branches helpers
+export const agentsComputed = {
+	...mapState('agents', ['agents']),
+};
+
+export const agentsActions = {
+	...mapActions('agents', {
+		getAgentsAction: 'getAgentsList',
+		saveAgentAction: 'saveAgent',
+		deleteAgentAction: 'deleteAgent',
+		editAgentAction: 'editAgent',
 	}),
 };
 
@@ -50,6 +65,7 @@ export const companiesActions = {
 		getCompaniesAction: 'getCompaniesList',
 		saveCompanyAction: 'saveCompany',
 		deleteCompanyAction: 'deleteCompany',
+		getCompanyAction: 'getCompany',
 		editCompanyAction: 'editCompany',
 	}),
 };
@@ -81,4 +97,36 @@ export const testsActions = {
 		deleteTestAction: 'deleteTest',
 		editTestAction: 'editTest',
 	}),
+};
+
+// Invoices helpers
+export const invoicesComputed = {
+	...mapState('invoices', ['invoices']),
+};
+
+export const invoicesActions = {
+	...mapActions('invoices', {
+		getInvoicesAction: 'getInvoicesList',
+		saveInvoiceAction: 'saveInvoice',
+		deleteInvoiceAction: 'deleteInvoice',
+		editInvoiceAction: 'editInvoice',
+		editRemainAction: 'editRemain',
+	}),
+};
+
+export const resultsActions = {
+	...mapActions('results', {
+		saveResultAction: 'saveResult',
+		editResultAction: 'editResult',
+		getResultAction: 'getResult',
+		editDeliveredAction: 'editDelivered',
+	}),
+};
+
+export const reportsActions = {
+	...mapActions('reports', ['getFinancialData', 'getFinancialSummary']),
+};
+
+export const permissionsActions = {
+	...mapActions('permissions', ['getUserPermissions', 'saveUserPermissions', 'editUserPermissions']),
 };

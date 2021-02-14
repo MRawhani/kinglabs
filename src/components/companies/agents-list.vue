@@ -71,6 +71,16 @@
 							label="رقم الهوية"
 						></v-text-field>
 					</v-col>
+					<v-col class="py-0" sm="6" cols="12">
+						<v-select
+							v-model="agentData.travel_type"
+							:items="travelTypes"
+							:rules="rules.travel_type"
+							dense
+							outlined
+							label="نوع السفر"
+						></v-select>
+					</v-col>
 				</v-row>
 				<div class="d-flex mt-4">
 					<v-tooltip top>
@@ -111,9 +121,15 @@ export default {
 			name: '',
 			age: '',
 			gender: '',
+			travel_type: '',
 			identity: '',
 			identity_number: '',
 		},
+		travelTypes: [
+			{ text: 'بر', value: 'بر' },
+			{ text: 'بحر', value: 'بحر' },
+			{ text: 'جوء', value: 'جوء' },
+		],
 	}),
 
 	computed: {
@@ -122,6 +138,7 @@ export default {
 				name: [(val) => !!val || 'اسم العميل مطلوب'],
 				age: [(value) => !!value || 'عمر العميل مطلوب'],
 				gender: [(val) => !!val || 'جنس العميل مطلوب'],
+				travel_type: [(val) => !!val || 'يرجى تحديد نوع السفر'],
 				identity: [(val) => !!val || 'يرجى تحديد نوع الهوية'],
 				identity_number: [(value) => !!value || 'رقم الهوية مطلوب'],
 			};
