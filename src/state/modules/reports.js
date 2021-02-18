@@ -7,14 +7,18 @@ export const getters = {};
 export const mutations = {};
 
 export const actions = {
-	getFinancialSummary() {
-		return api.get('/reports/financial/summary').then((res) => {
+	getFinancialSummary(context, filters) {
+		return api.get(`/reports/financial/summary?${filtersToQuery(filters)}`).then((res) => {
 			return res.data;
 		});
 	},
-	getFinancialData() {
-		return api.get('/reports/financial/data').then((res) => {
+	getFinancialData(context, filters) {
+		return api.get(`/reports/financial/data?${filtersToQuery(filters)}`).then((res) => {
 			return res.data.data.flat();
 		});
 	},
 };
+
+function filtersToQuery(filters) {
+	return `branches=${filters.branches}&from=${filters.from}&to=${filters.to}`;
+}

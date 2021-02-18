@@ -1,7 +1,17 @@
 <template>
 	<v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
-		<template v-slot:activator="{ on, attrs }">
-			<v-text-field v-model="date" :label="label" :rules="rules" outlined dense readonly :value="value" v-bind="attrs" v-on="on"></v-text-field>
+		<template v-slot:activator="{ on }">
+			<v-text-field
+				v-model="date"
+				:label="label"
+				:rules="rules"
+				outlined
+				dense
+				readonly
+				:value="value"
+				v-bind="$attrs"
+				v-on="on"
+			></v-text-field>
 		</template>
 		<v-date-picker v-model="date" scrollable>
 			<v-spacer></v-spacer>
@@ -21,7 +31,7 @@ export default {
 		},
 		rules: {
 			type: Array,
-			default: new Array(),
+			default: () => [],
 		},
 		value: {
 			type: String,
