@@ -89,13 +89,24 @@
 				</v-tab-item>
 			</v-tabs>
 		</v-card>
+
+		<v-dialog v-model="offlineDialog" max-width="350">
+			<v-card>
+				<v-card-title class="headline">لا يوجد انترنت</v-card-title>
+				<v-card-text>عذرا لايمكن الطباعة بدون انترنت!</v-card-text>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn color="primary" text @click="offlineDialog = false">اغلاق</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</layout>
 </template>
 
 <script>
 import layout from './layout/Layout.vue';
 import { reportsActions, authComputed, branchesActions } from '../state/mapper';
-import printJS from 'print-js';
+import { print } from '../utils/print';
 import dateDailog from '../components/base/date-dailog.vue';
 
 export default {
@@ -107,6 +118,7 @@ export default {
 		data: [],
 		branches: [],
 		isLoading: false,
+		offlineDialog: false,
 		filters: {
 			branches: [],
 			from: '',
@@ -202,17 +214,19 @@ export default {
 		},
 
 		printSummary() {
-			printJS({
-				printable: `/print/reports/summary?branch=${this.currentUser.data.branch_id}&${this.filtersToQuery()}`,
-				type: 'pdf',
-			});
+			if (window.navigator.onLine) {
+				print(`/print/reports/summary?branch=${this.currentUser.data.branch_id}&${this.filtersToQuery()}`);
+			} else {
+				this.offlineDialog = true;
+			}
 		},
 
 		printData() {
-			printJS({
-				printable: `/print/reports/data?branch=${this.currentUser.data.branch_id}&${this.filtersToQuery()}`,
-				type: 'pdf',
-			});
+			if (window.navigator.onLine) {
+				print(`/print/reports/data?branch=${this.currentUser.data.branch_id}&${this.filtersToQuery()}`);
+			} else {
+				this.offlineDialog = true;
+			}
 		},
 	},
 };

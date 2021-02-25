@@ -27,7 +27,7 @@
 				</v-dialog>
 			</v-toolbar>
 		</v-card>
-		<v-data-table :headers="headers" :loading="isLoading" :items="companies" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
+		<v-data-table :headers="headers" :loading="isLoading" :items="active" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
 			<template v-slot:[`item.discount`]="{ value }">
 				{{ `${value}%` }}
 			</template>
@@ -98,17 +98,6 @@ export default {
 		formTitle() {
 			return !this.isEditMode ? 'اظافة شركة' : 'تعديل شركة';
 		},
-	},
-
-	async created() {
-		try {
-			this.isLoading = true;
-			await this.getCompaniesAction();
-			this.isLoading = false;
-		} catch (error) {
-			this.$VAlert.error('عذرا حدث خطأ!');
-			this.isLoading = false;
-		}
 	},
 
 	methods: {

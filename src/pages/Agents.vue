@@ -44,7 +44,7 @@
 			v-model="selected"
 			:headers="headers"
 			:loading="isLoading"
-			:items="agents"
+			:items="active"
 			sort-by="id"
 			sort-desc
 			class="mt-8 elevation-16"
@@ -67,7 +67,7 @@
 					</template>
 					<span> تعديل </span>
 				</v-tooltip>
-				<v-tooltip top>
+				<v-tooltip top v-if="canDelete">
 					<template v-slot:activator="{ on }">
 						<v-btn dark small min-width="40" class="mx-3" color="error" @click="deleteAgent(item)" v-on="on">
 							<v-icon size="18">mdi-delete</v-icon>
@@ -77,6 +77,16 @@
 				</v-tooltip>
 			</template>
 		</v-data-table>
+		<v-dialog v-model="offlineDialog" max-width="350">
+			<v-card>
+				<v-card-title class="headline">لا يوجد انترنت</v-card-title>
+				<v-card-text>عذرا لايمكن الطباعة بدون انترنت!</v-card-text>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn color="primary" text @click="offlineDialog = false">اغلاق</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 		<confirm-dailog ref="confirm"></confirm-dailog>
 	</layout>
 </template>
@@ -86,9 +96,9 @@
 import AgentForm from '../components/agents/agent-form.vue';
 import ConfirmDailog from '../components/base/confirm-dailog';
 import Layout from './layout/Layout.vue';
-import { agentsComputed, agentsActions, invoicesActions } from '../state/mapper';
+import { agentsComputed, agentsActions, invoicesActions, authComputed } from '../state/mapper';
 import InvoiceForm from '../components/agents/invoice-form.vue';
-import printJS from 'print-js';
+import { print } from '../utils/print';
 
 export default {
 	name: 'Agents',
@@ -100,6 +110,7 @@ export default {
 		isLoading: false,
 		formDialog: false,
 		invoiceDialog: false,
+		offlineDialog: false,
 		isEditMode: false,
 		invoiceKey: 0,
 		updateAgent: {
@@ -116,13 +127,14 @@ export default {
 
 	computed: {
 		...agentsComputed,
+		...authComputed,
 		headers() {
 			return [
-				{ text: 'الرقم', value: 'id' },
-				{ text: 'اسم العميل', value: 'name' },
-				{ text: 'عمر العميل', value: 'age' },
-				{ text: 'نوع الهوية', value: 'identity' },
-				{ text: 'نوع السفر', value: 'travel_type' },
+				{ text: 'الرقم', value: 'id', sortable: false },
+				{ text: 'اسم العميل', value: 'name', sortable: false },
+				{ text: 'عمر العميل', value: 'age', sortable: false },
+				{ text: 'نوع الهوية', value: 'identity', sortable: false },
+				{ text: 'نوع السفر', value: 'travel_type', sortable: false },
 				{ text: 'إدارة', value: 'actions', sortable: false },
 			];
 		},
@@ -143,27 +155,21 @@ export default {
 
 			return this.result;
 		},
-	},
-
-	async created() {
-		try {
-			this.isLoading = true;
-			await this.getAgentsAction();
-			this.isLoading = false;
-		} catch (error) {
-			this.$VAlert.error('عذرا حدث خطأ!');
-			this.isLoading = false;
-		}
+		canDelete() {
+			return this.currentUser.permissions.includes('agents_delete');
+		},
 	},
 
 	methods: {
 		...agentsActions,
 		...invoicesActions,
+
 		editAgent(agent) {
 			this.isEditMode = true;
 			Object.assign(this.updateAgent, agent);
 			this.formDialog = true;
 		},
+
 		async deleteAgent(agent) {
 			try {
 				const confirmed = await this.$refs.confirm.open('حذف مستخدم', 'هل انت متأكد من حذف هذا العميل؟');
@@ -175,6 +181,7 @@ export default {
 				this.$VAlert.error('عذرا حدث خطأ!');
 			}
 		},
+
 		async saveAgent(agent) {
 			console.log(agent);
 			try {
@@ -192,30 +199,36 @@ export default {
 				this.$VAlert.error('عذرا حدث خطأ!');
 			}
 		},
+
 		async saveInvoice({ data, withPrint }) {
+			console.log(data);
+
 			try {
-				const { id } = await this.saveInvoiceAction(data);
+				await this.saveInvoiceAction(data);
 				this.$VAlert.success('تم حفظ الفاتورة');
 				if (withPrint) {
-					printJS({
-						printable: `/print/invoice/${id}`,
-						type: 'pdf',
-					});
+					if (!window.navigator.onLine) {
+						print(`/print/invoice/`);
+					} else {
+						this.offlineDialog = true;
+					}
 				}
 			} catch (error) {
 				this.$VAlert.error('عذرا حدث خطأ!');
 			}
 		},
-		printQRCode() {},
+
 		openInvoice() {
 			this.invoiceKey++;
 			this.invoiceDialog = true;
 		},
+
 		closeForm() {
 			this.$refs.agentForm.reset();
 			this.isEditMode = false;
 			this.formDialog = false;
 		},
+
 		closeInvoiceForm() {
 			this.$refs.invoiceForm.reset();
 			this.invoiceDialog = false;

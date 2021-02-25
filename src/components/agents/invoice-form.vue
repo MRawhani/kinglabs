@@ -101,6 +101,7 @@
 <script>
 import testSelect from '../base/test-select.vue';
 import { companiesActions } from '../../state/mapper';
+
 export default {
 	components: { testSelect },
 	name: 'InvoiceForm',
@@ -147,7 +148,6 @@ export default {
 			return {
 				tests: [
 					(val) => {
-						console.log(val);
 						return !!val.length || 'يرجى تحديد الفحوصات';
 					},
 				],
@@ -226,7 +226,12 @@ export default {
 					discount_type: this.discountType,
 					discount_by: this.discountBy,
 					delivery_date: this.deliveryDate,
-					agents: this.agents.map((agent) => ({ id: agent.id, tests: agent.tests.map((test) => test.id) })),
+					agents: this.agents.map((agent) => ({
+						id: agent.id,
+						name: agent.name,
+						tests: [agent.tests[0].id],
+						testName: agent.tests[0].name,
+					})),
 				},
 				withPrint: this.withPrint,
 			});

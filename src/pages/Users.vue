@@ -26,7 +26,7 @@
 				</v-dialog>
 			</v-toolbar>
 		</v-card>
-		<v-data-table :headers="headers" :loading="isLoading" :items="users" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
+		<v-data-table :headers="headers" :loading="isLoading" :items="active" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
 			<template v-slot:[`item.actions`]="{ item }">
 				<v-menu offset-y close-on-click origin="center center" transition="scale-transition">
 					<template #activator="{ on, attrs }">
@@ -136,18 +136,6 @@ export default {
 			return !this.isEditMode ? 'اظافة مستخدم' : 'تعديل مستخدم';
 		},
 	},
-
-	async created() {
-		try {
-			this.isLoading = true;
-			await this.getUsersAction();
-			this.isLoading = false;
-		} catch (error) {
-			this.$VAlert.error('عذرا حدث خطأ!');
-			this.isLoading = false;
-		}
-	},
-
 	methods: {
 		...usersActions,
 		...permissionsActions,
@@ -182,7 +170,7 @@ export default {
 		},
 		async userPermissions(user) {
 			try {
-				const { data } = await this.getUserPermissions(user.id);
+				const data = await this.getUserPermissions(user.id);
 				Object.assign(this.permissionsData, data);
 				this.isEditMode = true;
 			} catch (error) {

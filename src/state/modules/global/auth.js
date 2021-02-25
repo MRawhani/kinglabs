@@ -28,17 +28,22 @@ export const mutations = {
 
 export const actions = {
 	// This is automatically run in `src/state/store.js` when the app starts
-	init({ state }) {
+	init({ state, getters, dispatch }) {
 		setAuthHeaders(state);
+		if (getters.isLoggedIn) {
+			dispatch('loadBaseData', null, { root: true });
+		}
 	},
 
-	async logIn({ commit }, { email, password, type } = {}) {
+	async logIn({ commit, dispatch }, { email, password, type } = {}) {
 		const { data } = await api.post(`/login?type=${type}`, {
 			email,
 			password,
 		});
 
 		commit('SET_CURRENT_USER', data);
+		dispatch('loadBaseData', null, { root: true });
+
 		return data;
 	},
 

@@ -20,7 +20,7 @@
 				</v-dialog>
 			</v-toolbar>
 		</v-card>
-		<v-data-table :headers="headers" :loading="isLoading" :items="invoices" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
+		<v-data-table :headers="headers" :loading="isLoading" :items="active" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
 			<template v-slot:[`item.actions`]="{ item }">
 				<v-menu offset-y close-on-click origin="center center" transition="scale-transition">
 					<template #activator="{ on, attrs }">
@@ -51,7 +51,7 @@
 							</v-list-item>
 						</v-list-item-group>
 						<v-list-item-group color="primary">
-							<v-list-item @click="printResult(item)">
+							<v-list-item @click="printResultClicked(item)">
 								<v-list-item-icon>
 									<v-icon>mdi-printer</v-icon>
 								</v-list-item-icon>
@@ -78,21 +78,6 @@
 			</template>
 		</v-data-table>
 
-		<v-dialog v-model="alertDialog" persistent max-width="350">
-			<v-card>
-				<v-card-title>مبلغ متبقي</v-card-title>
-				<v-divider></v-divider>
-				<div class="pa-5">
-					يرجى دفع باقي المبلغ قبل التمكن من طباعة النتيجة
-				</div>
-				<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn color="primary" text @click="alertDialog = false">
-						OK
-					</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
 		<v-dialog v-model="remainDialog" persistent max-width="350">
 			<v-card>
 				<v-card-title>مبلغ متبقي</v-card-title>
@@ -111,6 +96,17 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+		<v-dialog v-model="offlineDialog" max-width="350">
+			<v-card>
+				<v-card-title class="headline">لا يوجد انترنت</v-card-title>
+				<v-card-text>عذرا لايمكن الطباعة بدون انترنت!</v-card-text>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn color="primary" text @click="offlineDialog = false">اغلاق</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
+		<confirm-dailog ref="confirm"></confirm-dailog>
 	</layout>
 </template>
 
@@ -118,17 +114,18 @@
 import Layout from './layout/Layout.vue';
 import { invoicesComputed, invoicesActions, resultsActions } from '../state/mapper';
 import EditInvoiceForm from '../components/invoices/edit-invoice-form.vue';
-import printJS from 'print-js';
+import ConfirmDailog from '../components/base/confirm-dailog.vue';
+import { print } from '../utils/print';
 
 export default {
 	name: 'Invoices',
-	components: { Layout, EditInvoiceForm },
+	components: { Layout, EditInvoiceForm, ConfirmDailog },
 	data: () => ({
 		search: '',
 		isLoading: false,
 		isEditMode: false,
 		invoiceDialog: false,
-		alertDialog: false,
+		offlineDialog: false,
 		remainDialog: false,
 		invoiceKey: 0,
 		invoice: {
@@ -136,9 +133,6 @@ export default {
 			total_amount: '',
 			remain: '',
 		},
-		items: [],
-		total: 0,
-		options: {},
 		remainAmount: 0,
 		currentId: 0,
 	}),
@@ -147,34 +141,21 @@ export default {
 		...invoicesComputed,
 		headers() {
 			return [
-				{ text: 'رقم العملية', value: 'id' },
-				{ text: 'اسم العميل', value: 'name' },
-				{ text: 'اسم الفحص', value: 'test' },
-				{ text: 'المبلغ المتبقي', value: 'remain' },
-				{ text: 'تاريخ التسليم', value: 'delivery_at' },
+				{ text: 'رقم العملية', value: 'id', sortable: false },
+				{ text: 'اسم العميل', value: 'name', sortable: false },
+				{ text: 'اسم الفحص', value: 'test', sortable: false },
+				{ text: 'الفرع', value: 'branch', sortable: false },
+				{ text: 'المبلغ المتبقي', value: 'remain', sortable: false },
+				{ text: 'تاريخ التسليم', value: 'delivery_at', sortable: false },
 				{ text: 'إدارة', value: 'actions', sortable: false },
 			];
 		},
 	},
 
-	created() {
-		this.loadData();
-	},
-
 	methods: {
 		...invoicesActions,
 		...resultsActions,
-		async loadData() {
-			try {
-				this.isLoading = true;
-				await this.getInvoicesAction();
-				this.isLoading = false;
-			} catch (error) {
-				this.$VAlert.error('عذرا حدث خطأ!');
-				console.log(error);
-				this.isLoading = false;
-			}
-		},
+
 		editInvoice(invoice) {
 			this.invoiceKey++;
 			Object.assign(this.invoice, invoice);
@@ -189,6 +170,7 @@ export default {
 			} catch (error) {
 				this.$VAlert.error('عذرا حدث خطأ!');
 				this.isLoading = false;
+				console.log(error);
 			}
 		},
 
@@ -207,7 +189,6 @@ export default {
 				await this.editRemainAction(this.currentId);
 				this.$VAlert.success('تم حفظ النتيجة');
 				this.remainDialog = false;
-				this.loadData();
 			} catch (error) {
 				this.$VAlert.error('عذرا حدث خطأ!');
 				this.remainDialog = false;
@@ -217,27 +198,37 @@ export default {
 		async generateCode(item) {
 			try {
 				await this.getResultAction(item.id);
-				printJS({
-					printable: `/print/qrcode/${item.id}`,
-					type: 'pdf',
-				});
+				if (window.navigator.onLine) {
+					print(`/print/qrcode/${item.id}`);
+				} else {
+					this.offlineDialog = true;
+				}
 			} catch (error) {
 				this.$VAlert.info('لم يتم ادخال النتيجة بعد!');
 			}
 		},
 
-		async printResult(item) {
+		async printResultClicked(item) {
 			if (item.remain !== 0) {
-				this.alertDialog = true;
+				const confirmd = await this.$refs.confirm.open('مبلغ متبقي', 'يرجى دفع باقي المبلغ قبل التمكن من طباعة النتيجة', 'طباعة');
+				if (confirmd) {
+					this.printResult(item);
+				}
+
 				return;
 			}
 
+			this.printResult(item);
+		},
+
+		async printResult(item) {
 			try {
 				await this.getResultAction(item.id);
-				printJS({
-					printable: `/print/result/${item.id}`,
-					type: 'pdf',
-				});
+				if (window.navigator.onLine) {
+					print(`/print/result/${item.id}`);
+				} else {
+					this.offlineDialog = true;
+				}
 			} catch (error) {
 				this.$VAlert.info('لم يتم ادخال النتيجة بعد!');
 			}

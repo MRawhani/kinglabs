@@ -49,7 +49,7 @@
 		<v-data-table
 			:headers="headers"
 			:loading="isLoading"
-			:items="branches"
+			:items="active"
 			sort-by="id"
 			sort-desc
 			class="mt-8 elevation-16"
@@ -123,23 +123,23 @@ export default {
 			return !this.isEditMode ? 'اظافة فرع' : 'تعديل فرع';
 		},
 		branchList() {
-			return this.branches.map((branch) => ({
+			return this.active.map((branch) => ({
 				value: branch.id,
 				text: branch.name,
 			}));
 		},
 	},
 
-	async created() {
-		try {
-			this.isLoading = true;
-			await this.getBranchesAction();
-			this.isLoading = false;
-		} catch (error) {
-			this.$VAlert.error('عذرا حدث خطأ!');
-			this.isLoading = false;
-		}
-	},
+	// async created() {
+	// 	try {
+	// 		this.isLoading = true;
+	// 		await this.getBranchesAction();
+	// 		this.isLoading = false;
+	// 	} catch (error) {
+	// 		this.$VAlert.error('عذرا حدث خطأ!');
+	// 		this.isLoading = false;
+	// 	}
+	// },
 
 	methods: {
 		...branchesActions,

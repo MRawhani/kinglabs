@@ -6,7 +6,7 @@
 			<v-card-actions>
 				<v-spacer></v-spacer>
 				<v-btn color="primary" text @click="close">اغلاق</v-btn>
-				<v-btn color="error darken-1" text @click="agree">حذف</v-btn>
+				<v-btn color="primary" text @click="agree">{{ okText }}</v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
@@ -20,12 +20,14 @@ export default {
 		cancel: null,
 		message: null,
 		title: null,
+		okText: '',
 	}),
 	methods: {
-		open(title, message) {
+		open(title, message, okText = 'حذف') {
 			this.dialog = true;
 			this.title = title;
 			this.message = message;
+			this.okText = okText;
 			return new Promise((resolve, reject) => {
 				this.confirm = resolve;
 				this.cancel = reject;

@@ -11,14 +11,15 @@
 					<v-col cols="12" sm="4" md="4">
 						<v-checkbox v-model="formData.permissions" label="لوحة التحكم" value="dashboard" hide-details></v-checkbox>
 						<v-checkbox v-model="formData.permissions" label="العملاء" value="agents" hide-details></v-checkbox>
-						<v-checkbox v-model="formData.permissions" label="التقارير" value="reports" hide-details></v-checkbox>
+						<v-checkbox v-model="formData.permissions" label="حذف العملاء" value="agents_delete" hide-details></v-checkbox>
 					</v-col>
 					<v-col cols="12" sm="4" md="4">
+						<v-checkbox v-model="formData.permissions" label="التقارير" value="reports" hide-details></v-checkbox>
 						<v-checkbox v-model="formData.permissions" label="العمليات" value="invoices" hide-details></v-checkbox>
 						<v-checkbox v-model="formData.permissions" label="الفحوصات" value="tests" hide-details></v-checkbox>
-						<v-checkbox v-model="formData.permissions" label="المستخدمين" value="users" hide-details></v-checkbox>
 					</v-col>
 					<v-col cols="12" sm="4" md="4">
+						<v-checkbox v-model="formData.permissions" label="المستخدمين" value="users" hide-details></v-checkbox>
 						<v-checkbox v-model="formData.permissions" label="الفروع" value="branches" hide-details></v-checkbox>
 						<v-checkbox v-model="formData.permissions" label="الشركات" value="companies" hide-details></v-checkbox>
 					</v-col>

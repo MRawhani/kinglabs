@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { testsActions } from '../../state/mapper';
+import { testsComputed } from '../../state/mapper';
 export default {
 	name: 'TestSelect',
 
@@ -29,26 +29,18 @@ export default {
 	},
 
 	data: () => ({
-		tests: [],
 		selected: [],
 	}),
 
 	computed: {
+		...testsComputed,
 		items() {
-			return this.tests.map((test) => ({
+			return this.active.map((test) => ({
 				text: `${test.name} (${test.price})`,
 				value: test.id,
 				...test,
 			}));
 		},
-	},
-
-	async created() {
-		this.tests = await this.getTestsAction();
-	},
-
-	methods: {
-		...testsActions,
 	},
 };
 </script>

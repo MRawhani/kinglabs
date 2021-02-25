@@ -26,7 +26,7 @@
 				</v-dialog>
 			</v-toolbar>
 		</v-card>
-		<v-data-table :headers="headers" :loading="isLoading" :items="tests" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
+		<v-data-table :headers="headers" :loading="isLoading" :items="active" sort-by="id" sort-desc class="mt-8 elevation-16" :search="search">
 			<template v-slot:[`item.duration`]="{ value }">
 				{{ `${value} ساعات` }}
 			</template>
@@ -91,16 +91,6 @@ export default {
 		formTitle() {
 			return !this.isEditMode ? 'اظافة فحص' : 'تعديل فحص';
 		},
-	},
-	async created() {
-		try {
-			this.isLoading = true;
-			await this.getTestsAction();
-			this.isLoading = false;
-		} catch (error) {
-			this.$VAlert.error('عذرا حدث خطأ!');
-			this.isLoading = false;
-		}
 	},
 	methods: {
 		...testsActions,

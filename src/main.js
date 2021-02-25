@@ -16,6 +16,8 @@ Vue.use(VueAlert, {
 	placement: 'top-center',
 });
 
+console.log(store.getters['currentBranch']);
+
 Vue.config.productionTip = false;
 
 new Vue({

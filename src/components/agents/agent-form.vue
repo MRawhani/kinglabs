@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { companiesActions } from '../../state/mapper';
+import { companiesComputed } from '../../state/mapper';
 
 export default {
 	name: 'AgentForm',
@@ -110,7 +110,6 @@ export default {
 			showPass: false,
 			withInvoice: false,
 			agentType: '1',
-			companies: [],
 			companyId: 0,
 			genders: [
 				{ text: 'ذكر', value: 1 },
@@ -128,6 +127,7 @@ export default {
 		};
 	},
 	computed: {
+		...companiesComputed,
 		rules() {
 			return {
 				name: [(val) => !!val || 'اسم العميل مطلوب'],
@@ -143,7 +143,7 @@ export default {
 			return this.agent;
 		},
 		companiesList() {
-			return this.companies.map((company) => ({
+			return this.active.map((company) => ({
 				text: company.name,
 				value: company.id,
 			}));
@@ -161,16 +161,14 @@ export default {
 			deep: true,
 		},
 	},
-	async created() {
-		this.companies = await this.loadCompanies();
-	},
+
 	methods: {
-		loadCompanies: companiesActions.getCompaniesAction,
 		submited() {
 			this.$emit('submited', {
 				data: {
 					...this.formData,
 					company_id: this.agentType == 2 ? this.companyId : null,
+					company: this.agentType == 2 ? this.active.find((c) => (c.id = this.companyId)).name : 'NO',
 				},
 				withInvoice: this.isEdit ? false : this.withInvoice,
 			});

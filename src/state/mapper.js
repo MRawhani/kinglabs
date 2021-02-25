@@ -13,6 +13,7 @@ export const authActions = {
 // Users helpers
 export const usersComputed = {
 	...mapState('users', ['users']),
+	...mapGetters('users', ['active']),
 };
 
 export const usersActions = {
@@ -29,6 +30,7 @@ export const usersActions = {
 // Branches helpers
 export const branchesComputed = {
 	...mapState('branches', ['branches']),
+	...mapGetters('branches', ['active']),
 };
 
 export const branchesActions = {
@@ -43,7 +45,8 @@ export const branchesActions = {
 
 // Branches helpers
 export const agentsComputed = {
-	...mapState('agents', ['agents']),
+	...mapState('agents', ['items']),
+	...mapGetters('agents', ['active']),
 };
 
 export const agentsActions = {
@@ -58,6 +61,7 @@ export const agentsActions = {
 // Companies helpers
 export const companiesComputed = {
 	...mapState('companies', ['companies']),
+	...mapGetters('companies', ['active']),
 };
 
 export const companiesActions = {
@@ -88,6 +92,7 @@ export const batchesActions = {
 // Tests helpers
 export const testsComputed = {
 	...mapState('tests', ['tests']),
+	...mapGetters('tests', ['active']),
 };
 
 export const testsActions = {
@@ -101,15 +106,14 @@ export const testsActions = {
 
 // Invoices helpers
 export const invoicesComputed = {
-	...mapState('invoices', ['invoices']),
+	...mapState('invoices', ['items']),
+	...mapGetters('invoices', ['active']),
 };
 
 export const invoicesActions = {
 	...mapActions('invoices', {
 		getInvoicesAction: 'getInvoicesList',
 		saveInvoiceAction: 'saveInvoice',
-		deleteInvoiceAction: 'deleteInvoice',
-		editInvoiceAction: 'editInvoice',
 		editRemainAction: 'editRemain',
 	}),
 };

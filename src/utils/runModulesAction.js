@@ -1,14 +1,14 @@
 import allModules from '../state/modules';
 import store from '../state/store';
 
-export default function runActionInAllModules(actionName, { modules = allModules, modulePrefx = '', flags = {} } = {}) {
+export default async function runActionInAllModules(actionName, { modules = allModules, modulePrefx = '', flags = {} } = {}) {
 	for (const moduleName in modules) {
 		const moduleDefinition = modules[moduleName];
 
 		// if the action defined in the module
 		if (moduleDefinition.actions && moduleDefinition.actions[actionName]) {
 			if (moduleDefinition.namespaced) {
-				store.dispatch(`${modulePrefx}${moduleName}/${actionName}`);
+				await store.dispatch(`${modulePrefx}${moduleName}/${actionName}`);
 			} else {
 				flags.dispatchGlobal = true;
 			}
@@ -16,7 +16,7 @@ export default function runActionInAllModules(actionName, { modules = allModules
 
 		// if there are nested sub-modules
 		if (moduleDefinition.modules) {
-			runActionInAllModules(actionName, {
+			await runActionInAllModules(actionName, {
 				modules: moduleDefinition.modules,
 				modulePrefx: modulePrefx + moduleName + '/',
 				flags,
@@ -26,6 +26,6 @@ export default function runActionInAllModules(actionName, { modules = allModules
 
 	// the root module
 	if (!modulePrefx && flags.dispatchGlobal) {
-		store.dispatch(actionName);
+		await store.dispatch(actionName);
 	}
 }

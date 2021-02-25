@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { branchesActions } from '../../state/mapper';
+import { branchesComputed } from '../../state/mapper';
 
 export default {
 	name: 'UserForm',
@@ -89,10 +89,10 @@ export default {
 		return {
 			validForm: false,
 			showPass: false,
-			branches: [],
 		};
 	},
 	computed: {
+		...branchesComputed,
 		rules() {
 			const passRule = this.isEdit ? [] : [(value) => !!value || 'كلمة المرور مطلوبة'];
 			return {
@@ -107,21 +107,20 @@ export default {
 			return this.user;
 		},
 		branchList() {
-			return this.branches.map((branch) => ({
+			return this.active.map((branch) => ({
 				value: branch.id,
 				text: branch.name,
 			}));
 		},
 	},
 	async created() {
-		try {
-			this.branches = await this.loadBranches();
-		} catch (error) {
-			this.$VAlert.error('');
-		}
+		// try {
+		// 	this.branches = await this.loadBranches();
+		// } catch (error) {
+		// 	this.$VAlert.error('');
+		// }
 	},
 	methods: {
-		loadBranches: branchesActions.getBranchesAction,
 		submited() {
 			this.$emit('submited', {
 				name: this.formData.name,
@@ -129,6 +128,9 @@ export default {
 				phone: this.formData.phone,
 				job_title: this.formData.job_title,
 				branch_id: this.formData.branch_id,
+				branch: {
+					name: this.active.find((b) => b.id === this.formData.branch_id).name,
+				},
 				password: this.formData.password,
 				password_confirmation: this.formData.password,
 			});

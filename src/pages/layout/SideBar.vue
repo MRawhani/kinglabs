@@ -12,6 +12,14 @@
 						</v-list-item-content>
 					</v-list-item>
 				</template>
+				<v-list-item @click="syncData">
+					<v-list-item-icon>
+						<v-icon>mdi-sync</v-icon>
+					</v-list-item-icon>
+					<v-list-item-content>
+						<v-list-item-title>مزامنة</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
 			</v-list-item-group>
 			<v-list-item-group v-else color="primary">
 				<v-list-item v-for="(link, i) in companyLinks" :key="i" link :to="link.href">
@@ -24,11 +32,23 @@
 				</v-list-item>
 			</v-list-item-group>
 		</v-list>
+
+		<v-dialog v-if="currentUser.type === 'user'" v-model="syncing" width="300" persistent>
+			<v-card color="primary" dark max-width="300">
+				<v-card-text>
+					<span class="py-2 d-block">يرجى الانتظار</span>
+					<v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+				</v-card-text>
+			</v-card>
+		</v-dialog>
 	</v-navigation-drawer>
 </template>
 
 <script>
 import { authComputed } from '../../state/mapper';
+import runActionInAllModules from '../../utils/runModulesAction';
+import store from '../../state/store';
+
 export default {
 	name: 'SideBar',
 
@@ -41,6 +61,7 @@ export default {
 
 	data() {
 		return {
+			syncing: false,
 			showDrawer: this.drawer,
 			links: [
 				{ title: 'لوحة التحكم', icon: 'mdi-view-dashboard', href: '/', name: 'dashboard' },
@@ -69,6 +90,15 @@ export default {
 	methods: {
 		canAccess(page) {
 			return this.currentUser.permissions.includes(page);
+		},
+
+		async syncData() {
+			this.syncing = true;
+
+			await runActionInAllModules('sync');
+			await store.dispatch('loadBaseData');
+
+			this.syncing = false;
 		},
 	},
 };
