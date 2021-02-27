@@ -115,6 +115,7 @@ export const invoicesActions = {
 		getInvoicesAction: 'getInvoicesList',
 		saveInvoiceAction: 'saveInvoice',
 		editRemainAction: 'editRemain',
+		isAgentExistAction: 'isAgentExist',
 	}),
 };
 

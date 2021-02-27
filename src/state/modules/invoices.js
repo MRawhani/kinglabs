@@ -83,6 +83,10 @@ export const actions = {
 		// });
 	},
 
+	isAgentExist({ state }, agent) {
+		return state.items.findIndex((invoice) => invoice.name === agent) !== -1;
+	},
+
 	async sync({ state, dispatch }) {
 		const requests = [];
 		const createdResults = [];

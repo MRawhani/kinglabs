@@ -87,6 +87,17 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+		<v-dialog v-model="existDialog" max-width="350">
+			<v-card>
+				<v-card-title class="headline">فحص مكرر</v-card-title>
+				<v-card-text>سبق اظافة فحص لهذا العميل!</v-card-text>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn color="primary" text @click="existDialog = false">اغلاق</v-btn>
+					<v-btn color="primary" text @click="closeExistDialog">مواصلة العملية</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 		<confirm-dailog ref="confirm"></confirm-dailog>
 	</layout>
 </template>
@@ -111,7 +122,9 @@ export default {
 		formDialog: false,
 		invoiceDialog: false,
 		offlineDialog: false,
+		existDialog: false,
 		isEditMode: false,
+		addInvoiceAnyway: true,
 		invoiceKey: 0,
 		updateAgent: {
 			name: '',
@@ -201,8 +214,6 @@ export default {
 		},
 
 		async saveInvoice({ data, withPrint }) {
-			console.log(data);
-
 			try {
 				await this.saveInvoiceAction(data);
 				this.$VAlert.success('تم حفظ الفاتورة');
@@ -219,6 +230,12 @@ export default {
 		},
 
 		openInvoice() {
+			const agent = this.selected[0].name;
+			if (this.isAgentExistAction(agent) && this.addInvoiceAnyway) {
+				this.existDialog = true;
+				return;
+			}
+
 			this.invoiceKey++;
 			this.invoiceDialog = true;
 		},
@@ -232,6 +249,13 @@ export default {
 		closeInvoiceForm() {
 			this.$refs.invoiceForm.reset();
 			this.invoiceDialog = false;
+		},
+
+		closeExistDialog() {
+			this.existDialog = false;
+			this.addInvoiceAnyway = false;
+
+			this.openInvoice();
 		},
 	},
 };
