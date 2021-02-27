@@ -1,10 +1,23 @@
 import store from '../state/store';
 
+import Home from '../pages/Home';
+import Tests from '../pages/Tests';
+import Users from '../pages/Users';
+import Reports from '../pages/Reports';
+import Companies from '../pages/Companies';
+import Agents from '../pages/Agents';
+import Branches from '../pages/Branches';
+import Invoices from '../pages/Invoices';
+import CompanyAgents from '../pages/CompanyAgents';
+import Login from '../pages/Login';
+import AccessDenied from '../pages/AccessDenied';
+import NotFound from '../pages/NotFound';
+
 export default [
 	{
 		path: '/',
 		name: 'dashboard',
-		component: () => lazyLoadView(import('../pages/Home')),
+		component: Home,
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -13,7 +26,7 @@ export default [
 	{
 		path: '/tests',
 		name: 'tests',
-		component: () => lazyLoadView(import('../pages/Tests')),
+		component: Tests,
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -22,7 +35,7 @@ export default [
 	{
 		path: '/users',
 		name: 'users',
-		component: () => lazyLoadView(import('../pages/Users')),
+		component: Users,
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -31,7 +44,7 @@ export default [
 	{
 		path: '/reports',
 		name: 'reports',
-		component: () => lazyLoadView(import('../pages/Reports')),
+		component: Reports,
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -40,7 +53,7 @@ export default [
 	{
 		path: '/companies',
 		name: 'companies',
-		component: () => lazyLoadView(import('../pages/Companies')),
+		component: Companies,
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -49,7 +62,7 @@ export default [
 	{
 		path: '/agents',
 		name: 'agents',
-		component: () => lazyLoadView(import('../pages/Agents.vue')),
+		component: Agents,
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -58,7 +71,7 @@ export default [
 	{
 		path: '/invoices',
 		name: 'invoices',
-		component: () => lazyLoadView(import('../pages/Invoices')),
+		component: Invoices,
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -67,7 +80,7 @@ export default [
 	{
 		path: '/company-agents',
 		name: 'companyAgents',
-		component: () => lazyLoadView(import('../pages/CompanyAgents')),
+		component: CompanyAgents,
 		meta: {
 			authRequired: true,
 			accessLevel: 'company',
@@ -76,7 +89,7 @@ export default [
 	{
 		path: '/branches',
 		name: 'branches',
-		component: () => lazyLoadView(import('../pages/Branches')),
+		component: Branches,
 		meta: {
 			authRequired: true,
 			accessLevel: 'user',
@@ -85,7 +98,7 @@ export default [
 	{
 		path: '/login',
 		name: 'login',
-		component: () => lazyLoadView(import('../pages/Login')),
+		component: Login,
 		meta: {
 			authRequired: false,
 			beforeResolve(to, from, next) {
@@ -108,13 +121,13 @@ export default [
 	{
 		path: '/access-denied',
 		name: 'accessDenied',
-		component: () => lazyLoadView(import('../pages/AccessDenied')),
+		component: AccessDenied,
 		props: true,
 	},
 	{
 		path: '/404',
 		name: '404',
-		component: () => lazyLoadView(import('../pages/NotFound')),
+		component: NotFound,
 		props: true,
 	},
 	// Redirect any unmatched routes to the 404 page.
@@ -124,26 +137,26 @@ export default [
 	},
 ];
 
-function lazyLoadView(AsyncView) {
-	const AsyncHandler = () => ({
-		component: AsyncView,
-		// A component to use while the component is loading.
-		loading: require('../components/base/loading.vue').default,
-		// Delay before showing the loading component.
-		// Default: 200 (milliseconds)
-		delay: 300,
-		// A fallback component in case the timeout is exceeded
-		// when loading the component.
-		error: require('../components/base/timeout.vue').default,
-		// Time before giving up trying to load the component.
-		// Default: Infinity (milliseconds).
-		timeout: 120000,
-	});
+// function lazyLoadView(AsyncView) {
+// 	const AsyncHandler = () => ({
+// 		component: AsyncView,
+// 		// A component to use while the component is loading.
+// 		loading: require('../components/base/loading.vue').default,
+// 		// Delay before showing the loading component.
+// 		// Default: 200 (milliseconds)
+// 		delay: 300,
+// 		// A fallback component in case the timeout is exceeded
+// 		// when loading the component.
+// 		error: require('../components/base/timeout.vue').default,
+// 		// Time before giving up trying to load the component.
+// 		// Default: Infinity (milliseconds).
+// 		timeout: 120000,
+// 	});
 
-	return Promise.resolve({
-		functional: true,
-		render(h, { data, children }) {
-			return h(AsyncHandler, data, children);
-		},
-	});
-}
+// 	return Promise.resolve({
+// 		functional: true,
+// 		render(h, { data, children }) {
+// 			return h(AsyncHandler, data, children);
+// 		},
+// 	});
+// }
