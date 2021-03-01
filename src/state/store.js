@@ -15,7 +15,7 @@ export default new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production',
 	getters: {
 		currentBranch(state) {
-			const branchId = state.global.auth.currentUser.data.branch_id;
+			const branchId = state.global.auth.currentUser?.data.branch_id;
 			return state.branches.branches.find((branch) => branch.id === branchId);
 		},
 	},
