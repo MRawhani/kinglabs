@@ -3,7 +3,7 @@
 import { app, protocol, BrowserWindow,Menu,ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 // import { autoUpdater } from "electron-updater"
-
+const path = require('path')
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -21,11 +21,11 @@ async function createWindow() {
       
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: true,
+      nodeIntegration: true,
+      // contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),
     }
-  })
+  }) 
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -36,10 +36,12 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
-  // process.env.GH_TOKEN ="63c45708f96fd1599f4b20a0786eb11bb257d68f";
+  process.env.GH_TOKEN ="63c45708f96fd1599f4b20a0786eb11bb257d68f";
   // mainWindow.once('ready-to-show', () => {
   //   autoUpdater.checkForUpdatesAndNotify();
   // });
+  autoUpdater.autoDownload = false;
+autoUpdater.checkForUpdates();
 }
 
 // Quit when all windows are closed.

@@ -1,1 +1,2 @@
-window.ipcRenderer = require("electron").ipcRenderer;
+import { ipcRenderer } from 'electron'
+window.ipcRenderer = ipcRenderer
