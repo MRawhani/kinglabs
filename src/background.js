@@ -2,7 +2,7 @@
 
 import { app, protocol, BrowserWindow,Menu,ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import { autoUpdater } from "electron-updater"
+// import { autoUpdater } from "electron-updater"
 
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -36,10 +36,10 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
-  process.env.GH_TOKEN ="63c45708f96fd1599f4b20a0786eb11bb257d68f";
-  mainWindow.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
-  });
+  // process.env.GH_TOKEN ="63c45708f96fd1599f4b20a0786eb11bb257d68f";
+  // mainWindow.once('ready-to-show', () => {
+  //   autoUpdater.checkForUpdatesAndNotify();
+  // });
 }
 
 // Quit when all windows are closed.
@@ -78,20 +78,21 @@ app.on('ready', async () => {
   }
   createWindow()
 })
-autoUpdater.on("update-available", () => {
+
+// autoUpdater.on("update-available", () => {
   
-  win.webContents.send("update_available", "update_available");
-});
-autoUpdater.on("update-not-available", () => {
+//   win.webContents.send("update_available", "update_available");
+// });
+// autoUpdater.on("update-not-available", () => {
   
-  win.webContents.send("updater", "update_not_available");
-});
-autoUpdater.on('update-downloaded', () => {
-  mainWindow.webContents.send('update_downloaded');
-});
-ipcMain.on('restart_app', () => {
-  autoUpdater.quitAndInstall();
-});
+//   win.webContents.send("updater", "update_not_available");
+// });
+// autoUpdater.on('update-downloaded', () => {
+//   mainWindow.webContents.send('update_downloaded');
+// });
+// ipcMain.on('restart_app', () => {
+//   autoUpdater.quitAndInstall();
+// });
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
