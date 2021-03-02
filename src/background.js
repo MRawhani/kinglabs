@@ -35,13 +35,15 @@ async function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
+    autoUpdater.checkForUpdatesAndNotify()
   }
   process.env.GH_TOKEN ="63c45708f96fd1599f4b20a0786eb11bb257d68f";
   // mainWindow.once('ready-to-show', () => {
   //   autoUpdater.checkForUpdatesAndNotify();
   // });
-  autoUpdater.autoDownload = false;
-autoUpdater.checkForUpdates();
+//   autoUpdater.autoDownload = false;
+// autoUpdater.checkForUpdates();
+
 }
 
 // Quit when all windows are closed.
