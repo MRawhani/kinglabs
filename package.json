@@ -4,6 +4,10 @@
   "description": "king lab project",
 "author": "m-alghobary",
   "private": true,
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/m-alghobary/king-labs"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

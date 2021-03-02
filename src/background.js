@@ -37,8 +37,9 @@ async function createWindow() {
     win.loadURL('app://./index.html')
   }
   process.env.GH_TOKEN ="63c45708f96fd1599f4b20a0786eb11bb257d68f";
-  autoUpdater.autoDownload = false;
-autoUpdater.checkForUpdates();
+  mainWindow.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify();
+  });
 }
 
 // Quit when all windows are closed.
