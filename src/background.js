@@ -35,9 +35,10 @@ async function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
+  process.env.GH_TOKEN ="fd162d15a2d9b0c2a859c4efcacd1fc763547353";
+
     autoUpdater.checkForUpdatesAndNotify()
   }
-  process.env.GH_TOKEN ="63c45708f96fd1599f4b20a0786eb11bb257d68f";
   // mainWindow.once('ready-to-show', () => {
   //   autoUpdater.checkForUpdatesAndNotify();
   // });
