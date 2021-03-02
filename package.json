@@ -2,11 +2,11 @@
   "name": "king-labs",
   "version": "0.1.0",
   "description": "king lab project",
-"author": "m-alghobary",
+"author": "mrawhani",
   "private": true,
   "repository": {
     "type" : "git",
-    "url" : "https://github.com/m-alghobary/king-labs"
+    "url" : "https://github.com/MRawhani/king-lab"
   },
   "scripts": {
     "serve": "vue-cli-service serve",

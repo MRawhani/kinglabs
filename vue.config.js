@@ -8,7 +8,7 @@ module.exports = {
         publish: [
           {
             provider: "github",
-            owner: "m-alghobary",
+            owner: "mrawhani",
             
           }
         ]
