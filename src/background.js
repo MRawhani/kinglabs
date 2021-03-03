@@ -11,10 +11,10 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
-
+let win 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+   win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -35,7 +35,7 @@ async function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
-   process.env.GH_TOKEN ="f6a5371deb6b339a43658806d7586f1475bcd021";
+   process.env.GH_TOKEN ="8d28e8828ab60f88e1833556b607c83abd466541";
 
     autoUpdater.checkForUpdatesAndNotify()
   }
@@ -106,7 +106,7 @@ autoUpdater.on("update-not-available", () => {
   win.webContents.send("updater", "update_not_available");
 });
 autoUpdater.on('update-downloaded', () => {
-  mainWindow.webContents.send('update_downloaded');
+  win.webContents.send('update_downloaded');
 });
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall();
