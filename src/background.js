@@ -35,13 +35,13 @@ async function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
-   process.env.GH_TOKEN ="bbbd7ffde168456d31049acba536423b175da71c";
+   process.env.GH_TOKEN ="f6a5371deb6b339a43658806d7586f1475bcd021";
 
     autoUpdater.checkForUpdatesAndNotify()
   }
   // process.env.GH_TOKEN ="fd162d15a2d9b0c2a859c4efcacd1fc763547353";
 
-  // mainWindow.once('ready-to-show', () => {
+  // mainWindow.once('ready-to-show', () => {w
   //   autoUpdater.checkForUpdatesAndNotify();
   // });
 //    autoUpdater.autoDownload = false;
