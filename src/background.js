@@ -35,7 +35,7 @@ async function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
-   process.env.GH_TOKEN ="8d28e8828ab60f88e1833556b607c83abd466541";
+   process.env.GH_TOKEN ="92244059e65155d70d21d35290bc383e2f703b7e";
 
     autoUpdater.checkForUpdatesAndNotify()
   }
