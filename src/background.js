@@ -6,7 +6,7 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 const path = require('path')
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-// const logger = require('electron-log');
+ const logger = require('electron-log');
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -35,15 +35,15 @@ async function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
+   process.env.GH_TOKEN ="bbbd7ffde168456d31049acba536423b175da71c";
+
+    autoUpdater.checkForUpdatesAndNotify()
+  }
   // process.env.GH_TOKEN ="fd162d15a2d9b0c2a859c4efcacd1fc763547353";
 
-   // autoUpdater.checkForUpdatesAndNotify()
-  }
-  process.env.GH_TOKEN ="fd162d15a2d9b0c2a859c4efcacd1fc763547353";
-
-  mainWindow.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
-  });
+  // mainWindow.once('ready-to-show', () => {
+  //   autoUpdater.checkForUpdatesAndNotify();
+  // });
 //    autoUpdater.autoDownload = false;
 //  /* Check for updates manually */
 //  autoUpdater.checkForUpdates();
@@ -92,13 +92,13 @@ app.on('ready', async () => {
 })
 
 autoUpdater.on('checking-for-update', () => {
-  console.log('Checking for update');
+  logger.log('Checking for update');
 });
 autoUpdater.on('error', (error) => {
-  console.error('Error while checking for updates', error);
+  logger.error('Error while checking for updates', error);
 });
 autoUpdater.on("update-available", (E) => {
-  console.log('Update is available:', E);
+  logger.log('Update is available:', E);
   win.webContents.send("update_available", "update_available");
 });
 autoUpdater.on("update-not-available", () => {
